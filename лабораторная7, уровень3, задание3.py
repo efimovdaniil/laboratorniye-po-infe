@@ -1,42 +1,75 @@
-#Вычислить сумму элементов с нечетными индексами заданного массива, в котором предварительно производится попарная перестановка соседних элементов,
-# начиная либо с первого (если значение первого элемента больше среднего арифметического элементов массива), либо с последнего элемента (в противном случае).
-#Для нахождения суммы элементов с нечетными индексами использовать метод, для перестановки элементов массива - делегат.
+#В соревнованиях участвуют три команды по 6 человек. Результаты соревнований представлены в виде мест участников каждой команды (1 - 18).
+# Определить команду-победителя, вычислив количество баллов, набранное каждой командой. Участнику, занявшему 1-е место, начисляется 5 баллов, 2-е - 4, 3-е - 3, 4-е - 2, 5-е - 1, остальным - 0 баллов.
+# При равенстве баллов победителем считается коман-да, за которую выступает участник, занявший 1-е место.
 
-class ArrayProcessor:
-    def __init__(self, data):
-        self.data = data
+class Participant:
+    def __init__(self, position):
+        self.position = position
 
-    def swap_elements(self, start_index):
-        for i in range(start_index, len(self.data) - 1, 2):
-            self.data[i], self.data[i + 1] = self.data[i + 1], self.data[i]
+    def get_team_index(self):
+        return (self.position - 1) // 6
 
-    def calculate_sum_of_odd_indices(self):
-        return sum(self.data[i] for i in range(1, len(self.data), 2))
+    def get_place_in_team(self):
+        return self.position - (self.get_team_index() * 6)
 
-    def process_array(self):
-        average = sum(self.data) / len(self.data)
-        first_element = self.data[0]
 
-        if first_element > average:
-            self.swap_elements(0)
-        else:
-            self.swap_elements(len(self.data) - 2)
+class Team:
+    def __init__(self, team_number):
+        self.team_number = team_number
+        self.score = 0
 
-def input_array():
-    while True:
-        try:
-            array_input = list(map(int, input("Введите элементы массива через пробел: ").split()))
-            return array_input
-        except ValueError:
-            print("Ошибка: введите корректные числовые значения.")
+    def add_score(self, points):
+        self.score += points
 
-print("Введите данные для массива:")
-array_data = input_array()
-processor = ArrayProcessor(array_data)
 
-processor.process_array()
+class Competition:
+    def __init__(self):
+        self.teams = [Team(i + 1) for i in range(3)]
 
-result_sum = processor.calculate_sum_of_odd_indices()
+    def calculate_scores(self, positions):
+        points = {1: 5, 2: 4, 3: 3, 4: 2, 5: 1}
 
-print(f"Обработанный массив: {processor.data}")
-print(f"Сумма элементов с нечетными индексами: {result_sum}")
+        for pos in positions:
+            participant = Participant(pos)
+            team_index = participant.get_team_index()
+            place_in_team = participant.get_place_in_team()
+
+            if place_in_team in points:
+                self.teams[team_index].add_score(points[place_in_team])
+
+    def determine_winner(self):
+        max_score = max(team.score for team in self.teams)
+        winning_teams = [team for team in self.teams if team.score == max_score]
+        if len(winning_teams) > 1:
+            for pos in positions:
+                participant = Participant(pos)
+                if participant.get_place_in_team() == 1:
+                    return winning_teams[participant.get_team_index()]
+
+        return winning_teams[0]
+
+
+def main():
+    global positions
+
+    positions = []
+    print("Введите места участников (1-18), разделяя пробелами:")
+    input_positions = input().strip().split()
+
+    positions = [int(pos) for pos in input_positions]
+
+    if len(positions) != 18:
+        print("Ошибка: должно быть введено ровно 18 мест участников.")
+        return
+
+    competition = Competition()
+    competition.calculate_scores(positions)
+    winning_team = competition.determine_winner()
+
+    print(f"Команда-победитель: Команда {winning_team.team_number} с {winning_team.score} баллами.")
+    for team in competition.teams:
+        print(f"Команда {team.team_number}: {team.score} баллов")
+
+
+if __name__ == "__main__":
+    main()
