@@ -28,6 +28,7 @@ class Tournament:
         self.groups = []
 
     def add_group(self, group):
+
         self.groups.append(group)
 
     def get_final_teams(self):
@@ -41,17 +42,31 @@ def main():
     group_a = Group("Группа A")
     group_b = Group("Группа B")
 
-    print("Введите команды для Группы A:")
-    for i in range(12):
-        name = input(f"Введите имя команды A{i + 1}: ")
-        points = int(input(f"Введите количество очков для команды {name}: "))
-        group_a.add_team(Team(name, points))
+    group_a.add_team(Team("Команда A1", 25))
+    group_a.add_team(Team("Команда A2", 18))
+    group_a.add_team(Team("Команда A3", 20))
+    group_a.add_team(Team("Команда A4", 30))
+    group_a.add_team(Team("Команда A5", 15))
+    group_a.add_team(Team("Команда A6", 22))
+    group_a.add_team(Team("Команда A7", 10))
+    group_a.add_team(Team("Команда A8", 28))
+    group_a.add_team(Team("Команда A9", 12))
+    group_a.add_team(Team("Команда A10", 19))
+    group_a.add_team(Team("Команда A11", 23))
+    group_a.add_team(Team("Команда A12", 17))
 
-    print("\nВведите команды для Группы B:")
-    for i in range(12):
-        name = input(f"Введите имя команды B{i + 1}: ")
-        points = int(input(f"Введите количество очков для команды {name}: "))
-        group_b.add_team(Team(name, points))
+    group_b.add_team(Team("Команда B1", 27))
+    group_b.add_team(Team("Команда B2", 24))
+    group_b.add_team(Team("Команда B3", 29))
+    group_b.add_team(Team("Команда B4", 21))
+    group_b.add_team(Team("Команда B5", 16))
+    group_b.add_team(Team("Команда B6", 18))
+    group_b.add_team(Team("Команда B7", 14))
+    group_b.add_team(Team("Команда B8", 26))
+    group_b.add_team(Team("Команда B9", 11))
+    group_b.add_team(Team("Команда B10", 20))
+    group_b.add_team(Team("Команда B11", 15))
+    group_b.add_team(Team("Команда B12", 13))
 
     tournament = Tournament()
     tournament.add_group(group_a)
@@ -59,10 +74,11 @@ def main():
 
     final_teams = tournament.get_final_teams()
 
-    print("\nКоманды, прошедшие во второй этап:")
+    print("Команды, прошедшие во второй этап:")
     for team in final_teams:
         print(team)
 
 
 if __name__ == "__main__":
     main()
+
