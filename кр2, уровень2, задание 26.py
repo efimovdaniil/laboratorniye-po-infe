@@ -1,69 +1,51 @@
 #В двух заданных матрицах одинакового размером поменять строки, содержащие максимальное количество отрицательных эле-ментов.
 #Нахождение количества отрицательных элементов заданной строки матрицы осуществлять в методе.
 #Определение номера стро-ки, содержащей максимальное количество отрицательных элементов, осуществлять в методе.
+import random
+
+def generate_matrix(rows, cols):
+    return [[random.randint(-10, 10) for _ in range(cols)] for _ in range(rows)]
 
 def count_negative_elements(row):
     return sum(1 for x in row if x < 0)
 
-
 def find_row_with_max_negatives(matrix):
-    max_neg_count = -1
-    max_row_index = -1
-
+    max_negatives = -1
+    row_index = -1
     for i, row in enumerate(matrix):
-        neg_count = count_negative_elements(row)
-        if neg_count > max_neg_count:
-            max_neg_count = neg_count
-            max_row_index = i
+        negatives_count = count_negative_elements(row)
+        if negatives_count > max_negatives:
+            max_negatives = negatives_count
+            row_index = i
+    return row_index
 
-    return max_row_index
+def swap_rows(matrix1, matrix2, row_index1, row_index2):
 
+    matrix1[row_index1], matrix2[row_index2] = matrix2[row_index2], matrix1[row_index1]
 
-def swap_rows(matrix1, matrix2, row1_index, row2_index):
-    matrix1[row1_index], matrix2[row2_index] = matrix2[row2_index], matrix1[row1_index]
-
-
-def main():
-    rows, cols = 3, 4
-    print("Введите значения для первой матрицы (3x4):")
-    matrix1 = []
-    for i in range(rows):
-        row = list(map(int, input(f"Введите 4 целых числа для строки {i + 1}, разделенных пробелом: ").split()))
-        while len(row) != cols:
-            print(f"Ошибка: необходимо ввести ровно {cols} чисел.")
-            row = list(map(int, input(f"Введите 4 целых числа для строки {i + 1}, разделенных пробелом: ").split()))
-        matrix1.append(row)
-
-    print("\nВведите значения для второй матрицы (3x4):")
-    matrix2 = []
-    for i in range(rows):
-        row = list(map(int, input(f"Введите 4 целых числа для строки {i + 1}, разделенных пробелом: ").split()))
-        while len(row) != cols:
-            print(f"Ошибка: необходимо ввести ровно {cols} чисел.")
-            row = list(map(int, input(f"Введите 4 целых числа для строки {i + 1}, разделенных пробелом: ").split()))
-        matrix2.append(row)
-
-    print("\nПервая матрица:")
-    for row in matrix1:
+def print_matrix(matrix):
+    for row in matrix:
         print(row)
-
-    print("\nВторая матрица:")
-    for row in matrix2:
-        print(row)
-
-    row1_index = find_row_with_max_negatives(matrix1)
-    row2_index = find_row_with_max_negatives(matrix2)
-    swap_rows(matrix1, matrix2, row1_index, row2_index)
-
-    # Печатаем измененные матрицы
-    print("\nПервая матрица после замены строк:")
-    for row in matrix1:
-        print(row)
-
-    print("\nВторая матрица после замены строк:")
-    for row in matrix2:
-        print(row)
-
 
 if __name__ == "__main__":
-    main()
+    rows, cols = 4, 5
+    matrix1 = generate_matrix(rows, cols)
+    matrix2 = generate_matrix(rows, cols)
+
+    print("Матрица 1:")
+    print_matrix(matrix1)
+    print("\nМатрица 2:")
+    print_matrix(matrix2)
+
+    row_index1 = find_row_with_max_negatives(matrix1)
+    row_index2 = find_row_with_max_negatives(matrix2)
+
+    print(f"\nСтрока с максимальным количеством отрицательных элементов в матрице 1: {row_index1}")
+    print(f"\nСтрока с максимальным количеством отрицательных элементов в матрице 2: {row_index2}")
+
+    swap_rows(matrix1, matrix2, row_index1, row_index2)
+
+    print("\nМатрица 1 после замены:")
+    print_matrix(matrix1)
+    print("\nМатрица 2 после замены:")
+    print_matrix(matrix2)
