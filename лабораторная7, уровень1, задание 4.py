@@ -7,7 +7,6 @@ print(x1,x2,x3)
 
 
 #Результаты соревнований по прыжкам в высоту определяются по лучшей из двух попыток. Вывести список участников в порядке занятых мест.
-
 class Participant:
     def __init__(self, name):
         self.name = name
@@ -35,30 +34,26 @@ class Competition:
 
     def display_results(self):
         results = self.get_results()
-        print("\nРезультаты соревнований по прыжкам в высоту:")
+        print("Результаты соревнований по прыжкам в высоту:")
         for index, participant in enumerate(results, start=1):
             print(f"{index}. {participant}")
 
-
-def main():
+if __name__ == "__main__":
     competition = Competition()
 
-    num_participants = int(input("Введите количество участников: "))
+    alice = Participant("Алиса")
+    alice.add_attempt(1.65)
+    alice.add_attempt(1.70)
+    competition.add_participant(alice)
 
-    for _ in range(num_participants):
-        name = input("Введите имя участника: ")
-        participant = Participant(name)
+    bob = Participant("Боб")
+    bob.add_attempt(1.75)
+    bob.add_attempt(1.80)
+    competition.add_participant(bob)
 
-        num_attempts = int(input(f"Введите количество попыток для {name}: "))
-        for _ in range(num_attempts):
-            height = float(input("Введите высоту прыжка (в метрах): "))
-            participant.add_attempt(height)
-
-        competition.add_participant(participant)
-
+    charlie = Participant("Чарли")
+    charlie.add_attempt(1.60)
+    charlie.add_attempt(1.65)
+    competition.add_participant(charlie)
 
     competition.display_results()
-
-
-if __name__ == "__main__":
-    main()
