@@ -2,18 +2,13 @@
 #Получить итоговый протокол, содержащий фамилии и результаты, в порядке занятых спортсменами мест по результатам 2 прыжков.
 
 class Athlete:
-    def __init__(self, name):
+    def __init__(self, name, scores):
         self.name = name
-        self.scores = []
+        self.scores = scores
+        self.total_score = self.calculate_total_score()
 
-    def add_scores(self, jump_scores):
-        self.scores.append(jump_scores)
-
-    def total_score(self):
-        return sum(self.scores)
-
-    def __str__(self):
-        return f"{self.name}: {self.total_score()}"
+    def calculate_total_score(self):
+        return sum([sum(jump_scores) for jump_scores in self.scores])
 
 
 class Competition:
@@ -23,39 +18,20 @@ class Competition:
     def add_athlete(self, athlete):
         self.athletes.append(athlete)
 
-    def get_results(self):
-        return sorted(self.athletes, key=lambda a: a.total_score(), reverse=True)
+    def calculate_results(self):
+        return sorted(self.athletes, key=lambda athlete: athlete.total_score, reverse=True)
 
     def display_results(self):
-        results = self.get_results()
-        print("\nИтоговый протокол соревнований по прыжкам в воду:")
-        for index, athlete in enumerate(results, start=1):
-            print(f"{index}. {athlete}")
-
-
-def main():
-    competition = Competition()
-
-    num_athletes = int(input("Введите количество спортсменов: "))
-
-    for _ in range(num_athletes):
-        name = input("Введите фамилию спортсмена: ")
-        athlete = Athlete(name)
-
-        for jump in range(1, 3):
-            scores = []
-            print(f"\nВведите баллы за прыжок {jump} (5 судей):")
-            for judge in range(1, 6):  # 5 судей
-                score = float(input(f"Баллы от судьи {judge}: "))
-                scores.append(score)
-
-            scores.remove(max(scores))
-            scores.remove(min(scores))
-            athlete.add_scores(sum(scores))
-
-        competition.add_athlete(athlete)
-    competition.display_results()
-
+        sorted_athletes = self.calculate_results()
+        print("Итоговый протокол:")
+        for place, athlete in enumerate(sorted_athletes, start=1):
+            print(f"{place}. {athlete.name}: {athlete.total_score:.2f}")
 
 if __name__ == "__main__":
-    main()
+    competition = Competition()
+
+    competition.add_athlete(Athlete("Иванов", [[8.5, 9.0, 8.0, 7.5, 9.2], [8.0, 8.5, 9.0, 8.0, 8.5]]))
+    competition.add_athlete(Athlete("Петров", [[9.0, 9.5, 9.2, 9.0, 9.1], [9.2, 9.0, 9.1, 9.3, 9.0]]))
+    competition.add_athlete(Athlete("Сидоров", [[7.0, 8.0, 7.5, 7.0, 7.5], [8.0, 8.5, 8.0, 8.0, 8.5]]))
+
+    competition.display_results()
