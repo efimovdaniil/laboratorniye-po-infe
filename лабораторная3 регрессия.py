@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
 
-a_true = 2.0  # Истинное значение амплитуды
-b_true = 1.5  # Истинное значение частоты
-c_true = 3.0  # Истинное значение смещения
-
+a_true = 2.0  
+b_true = 1.5  
+c_true = 3.0  
 
 np.random.seed(42)
 x_min, x_max, points = 0, 10, 50
